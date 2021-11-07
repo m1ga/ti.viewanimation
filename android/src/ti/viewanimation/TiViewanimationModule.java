@@ -8,16 +8,17 @@
  */
 package ti.viewanimation;
 
-import com.daimajia.androidanimations.library.BaseViewAnimator;
+import android.animation.ValueAnimator;
+
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
+import org.appcelerator.kroll.KrollDict;
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 import org.appcelerator.kroll.common.TiConfig;
 import org.appcelerator.titanium.TiApplication;
 import org.appcelerator.titanium.util.TiConvert;
-import com.daimajia.androidanimations.library.attention.*;
 
 import java.util.HashMap;
 
@@ -92,6 +93,9 @@ public class TiViewanimationModule extends KrollModule
 	@Kroll.constant public static final int ZOOMOUTRIGHT = 58;
 	@Kroll.constant public static final int ZOOMOUTUP = 59;
 
+	@Kroll.constant public static final int REPEAT_RESTART = ValueAnimator.RESTART;
+	@Kroll.constant public static final int REPEAT_REVERSE = ValueAnimator.REVERSE;
+
 	public TiViewanimationModule()
 	{
 		super();
@@ -102,11 +106,13 @@ public class TiViewanimationModule extends KrollModule
 
 	// Methods
 	@Kroll.method
-	public void animate(HashMap options)  {
+	public TiAnimationProxy animate(HashMap options)  {
 		ViewProxy view = (ViewProxy) options.get("view");
 		int duration = TiConvert.toInt(options.get("duration"), 500);
 		int repeat = TiConvert.toInt(options.get("repeat"), 0);
 		int type = TiConvert.toInt(options.get("type"), 0);
+		int delay = TiConvert.toInt(options.get("delay"), 0);
+		int repeatMode = TiConvert.toInt(options.get("repeatMode"), REPEAT_RESTART);
 		Techniques tec = null;
 
 		if (type == 1) tec = Techniques.Flash;
@@ -169,11 +175,27 @@ public class TiViewanimationModule extends KrollModule
 		if (type == 58) tec = Techniques.ZoomOutRight;
 		if (type == 59) tec = Techniques.ZoomOutUp;
 
-		YoYo.with(tec)
-				.duration(duration)
-				.repeat(repeat)
-				.pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
-				.playOn(view.getOrCreateView().getNativeView());
-	}
+		YoYo.YoYoString animation = null;
+		if (tec != null) {
+			animation = YoYo.with(tec)
+					.duration(duration)
+					.repeat(repeat)
+					.delay(delay)
+					.repeatMode(repeatMode)
+					.pivot(YoYo.CENTER_PIVOT, YoYo.CENTER_PIVOT)
+					.onEnd(animator -> {
+						fireEvent("done", new KrollDict());
+					})
+					.onCancel(animator -> {
+						fireEvent("cancel", new KrollDict());
+					})
+					.onStart(animator -> {
+						fireEvent("start", new KrollDict());
+					})
+					.playOn(view.getOrCreateView().getNativeView());
+		}
 
+		TiAnimationProxy tiAnimation = new TiAnimationProxy(animation);
+		return tiAnimation;
+	}
 }
