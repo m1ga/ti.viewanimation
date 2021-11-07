@@ -29,6 +29,17 @@ win.addEventListener("open", function(e) {
 win.open();
 ```
 
+## Methods
+* animate({view, duration, repeat, repeatMode, type, delay}) -> returns animation
+
+### animation methods
+* stop()
+
+## Events
+* start
+* cancel
+* done
+
 ## Constants
 
 use the following animation type constants:
@@ -92,3 +103,8 @@ use the following animation type constants:
 * ZOOMOUTLEFT
 * ZOOMOUTRIGHT
 * ZOOMOUTUP
+
+
+repeatMode:
+* REPEAT_RESTART
+* REPEAT_REVERSE
