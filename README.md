@@ -1,5 +1,8 @@
 # ti.viewanimation
 
+<img src="ani.gif"/>
+<br/>
+
 Using [AndroidViewAnimations](https://github.com/daimajia/AndroidViewAnimations) in Titanium
 
 ## Example
