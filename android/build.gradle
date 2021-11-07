@@ -1,0 +1,3 @@
+dependencies {
+	implementation 'com.daimajia.easing:library:2.4@aar'
+}

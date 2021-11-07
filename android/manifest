@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 1.0.0
+apiversion: 4
+architectures: arm64-v8a armeabi-v7a x86 x86_64
+description: ti.viewanimation
+author: Michael Gangolf
+license: MIT
+copyright: Copyright (c) 2021 by Michael Gangolf
+
+# these should not be edited
+name: ti.viewanimation
+moduleid: ti.viewanimation
+guid: db6a7144-0d01-4ae7-a1d2-7d1e18781018
+platform: android
+minsdk: 9.0.0.GA
