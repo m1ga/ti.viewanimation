@@ -9,21 +9,26 @@ Using [AndroidViewAnimations](https://github.com/daimajia/AndroidViewAnimations)
 
 ```js
 const VIEW_ANIMATION = require("ti.viewanimation");
+var ani;
 const win = Ti.UI.createWindow();
 const view = Ti.UI.createView({
 	width: 200,
 	height: 200,
 	backgroundColor: "red"
 });
-
 win.add(view);
 win.addEventListener("open", function(e) {
-	VIEW_ANIMATION.animate({
+	ani = VIEW_ANIMATION.animate({
 		view: view,
 		type: VIEW_ANIMATION.RUBBERBAND,
 		duration: 500,
-		repeat: 1
+		repeat: -1	//
 	});
+
+	// stop animation after 3 seconds
+	setTimeout(function(){
+		ani.stop();
+	}, 3000)
 })
 
 win.open();
@@ -34,6 +39,10 @@ win.open();
 
 ### animation methods
 * stop()
+
+### animation properties
+* isRunning
+* isStarted
 
 ## Events
 * start
